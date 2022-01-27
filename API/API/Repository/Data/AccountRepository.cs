@@ -38,7 +38,7 @@ namespace API.Repository.Data
                 {
                     return 3; //wrong pass
                 }
-        }
+            }
             else
             {
                 return 2; //no acc
@@ -105,7 +105,7 @@ namespace API.Repository.Data
                 string body = "Hello, This is Email sending test using gmail.";
 
                 MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("ameliaisnanda99@gmail.com");
+                mail.From = new MailAddress(emailFromAddress);
                 mail.To.Add(emailToAddress);
                 mail.Subject = subject;
                 mail.Body = body;
