@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.Models;
 using API.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using System;
 using System.Collections;
@@ -75,34 +76,60 @@ namespace API.Repository.Data
             return result;
         }
 
-        public string GetNumericOTP(AccountVM accountVM)
+        /*public string GetNumericOTP()
         {
             string numbers = "0123456789";
             Random random = new Random();
             string otp = string.Empty;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
                 int tempval = random.Next(0, numbers.Length);
                 otp += tempval;
             }
             return otp;
-        }
+        }*/
 
+
+        //tambah kolom di variable
+        //DateTime.Now + Add.Minutes (create function)
+        //di tittle tambah datetime biar ga kedetect spam
+        //change yg dikirim otp, email, new password
+        //implementasi jwt
+        //authentication -> login
+        //authorizatiion -> access
+        //add model role untuk autorisasi
+        //table acc to role (M to M) ada table normalisasi 
+        //acc to acc_role (1 to many) - acc_role to role (
+        //employee, manager, direktur, 
+        //tambahan di register, setiap emplloyee yang daftar, rolenya auto employee
 
         public int ForgotPassword(AccountVM accountVM)
         {
             var emailNow = (from g in context.Employees where g.Email == accountVM.Email select g).FirstOrDefault<Employee>();
             if (emailNow != null)
             {
-                
+                string numbers = "123456789";
+                Random random = new Random();
+                string otp = string.Empty;
+                for (int i = 0; i < 6; i++)
+                {
+                    int tempval = random.Next(0, numbers.Length);
+                    otp += tempval;
+                }
+                var accountNow = (from g in context.Accounts where g.NIK == emailNow.NIK select g).FirstOrDefault<Account>();
                 string smtpAddress = "smtp.gmail.com";
                 int portNumber = 587;
                 bool enableSSL = true;
-                string emailFromAddress = "ameliaisnanda99@gmail.com"; //Sender Email Address  
-                string password = "31agustus1999"; //Sender Password  
+                string emailFromAddress = "medebelly@gmail.com"; //Sender Email Address  
+                string password = "webtooniwannabeyou"; //Sender Password  
                 string emailToAddress = accountVM.Email; //Receiver Email Address  
-                string subject = "Hello";
-                string body = "Hello, This is Email sending test using gmail.";
+                string subject = "OTP " + DateTime.Now;
+                string body = "Hello, This is your OTP " + otp;
+                accountNow.OTP = Convert.ToInt32(otp);
+                accountNow.ExpiredToken = DateTime.Now.AddMinutes(5);
+                accountNow.isUsed = false; //belum dipake otp-nya
+                context.Entry(accountNow).State = EntityState.Modified; //insert data di account
+                context.SaveChanges();                
 
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(emailFromAddress);
@@ -117,9 +144,60 @@ namespace API.Repository.Data
                     smtp.EnableSsl = enableSSL;
                     smtp.Send(mail);
                 }
+                return 1;
             }
-            return 1;
+            else
+            {
+                return 0; //email not found
+            }        
 
         }
+        public int ChangePassword(AccountVM accountVM)
+        {
+            var emailNow = (from g in context.Employees where g.Email == accountVM.Email select g).FirstOrDefault<Employee>();
+            if (emailNow!=null)
+            {
+                var accountNow = (from g in context.Accounts where g.NIK == emailNow.NIK select g).FirstOrDefault<Account>();
+                if (accountNow != null)
+                {
+                    if (accountNow.OTP == accountVM.OTP)
+                    {
+                        if (DateTime.Now < accountNow.ExpiredToken)
+                        {
+                            if (accountNow.isUsed == false)
+                            {
+                                if (accountVM.Password == accountVM.ConfirmPassword)
+                                {
+                                    accountNow.password = BCrypt.Net.BCrypt.HashPassword(accountVM.Password);
+                                    accountNow.isUsed = true;
+                                    context.Entry(accountNow).State = EntityState.Modified;
+                                    context.SaveChanges();
+                                    return 1; //berhasil
+                                }
+                                else
+                                {
+                                    return 2; //Password & ConfirmPass ga sama
+                                }
+                            }
+                            else
+                            {
+                                return 3; //OTP udah dipakai
+                            }
+                        }
+                        else
+                        {
+                            return 4; //OTP expired
+                        }
+                    }
+                    else
+                    {
+                        return 5; //OTP salah
+                    }
+                }
+
+            }
+            return 0;
+        }
+            
     }
 }

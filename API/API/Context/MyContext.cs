@@ -28,6 +28,12 @@ namespace API.Context
             modelBuilder.Entity<University>()
               .HasMany(a => a.Education)
               .WithOne(b => b.University);
+            modelBuilder.Entity<Role>()
+              .HasMany(a => a.AccountRole)
+              .WithOne(b => b.Role);
+            modelBuilder.Entity<Account>()
+              .HasMany(a => a.AccountRole)
+              .WithOne(b => b.Account);
         }
      
         public DbSet<Employee> Employees { get; set; }
@@ -35,6 +41,8 @@ namespace API.Context
         public DbSet<Profiling> Profilings { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<University> Universities { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<AccountRole> AccountRoles { get; set; }
     }
 
         

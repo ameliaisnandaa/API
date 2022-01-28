@@ -45,6 +45,13 @@ namespace API.Repository.Data
                     };
                     context.Accounts.Add(ACC);
 
+                    var AR = new AccountRole()
+                    {
+                        Account_Id = emp.NIK,
+                        Role_Id = 1
+                    };
+                    context.AccountRoles.Add(AR);
+
                     var EDU = new Education()
                     {
                         Degree = registerVM.Degree,
@@ -129,12 +136,16 @@ namespace API.Repository.Data
             var profilings = context.Profilings;
             var educations = context.Educations;
             var universities = context.Universities;
+            var roles = context.Roles;
+            var accountroles = context.AccountRoles;
 
             var result = (from emp in employees
                           join acc in accounts on emp.NIK equals acc.NIK
                           join prof in profilings on acc.NIK equals prof.NIK
                           join edu in educations on prof.Education_Id equals edu.Id
                           join univ in universities on edu.University_Id equals univ.Id
+                          join ar in accountroles on acc.NIK equals ar.Account_Id
+                          join role in roles on ar.Role_Id equals role.Id
 
                           select new
                           {
@@ -145,7 +156,8 @@ namespace API.Repository.Data
                               Email = emp.Email,
                               Degree = edu.Degree,
                               GPA = edu.GPA,
-                              UnivName = univ.Name
+                              UnivName = univ.Name,
+                              Role = role.Name
                           }).ToList();
 
 

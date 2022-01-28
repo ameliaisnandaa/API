@@ -45,12 +45,52 @@ namespace API.Controllers
                 return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "LOGIN GAGAL!" });
             }
         }
-        [HttpGet("Forgot")]
+        [HttpPut("Forgot")]
         public ActionResult ForgotPassword(AccountVM accountVM)
         {
             var result = accountRepository.ForgotPassword(accountVM);
-            return Ok();
+            if (result != 0)
+            {
+                return StatusCode(200, new { status = HttpStatusCode.OK, message = "OTP TERKIRIM!" });
+            }
+            else
+            {
+                return StatusCode(404, new { status = HttpStatusCode.NotFound, message = "OTP GAGAL TERKIRIM! AKUN TIDAK DITEMUKAN" });
+            }
         }
+        [HttpPut("Change")]
+        public ActionResult ChangePassword(AccountVM accountVM)
+        {
+            var result = accountRepository.ChangePassword(accountVM);
+            if (result != 0)
+            {
+                if (result == 1)
+                {
+                    return StatusCode(200, new { status = HttpStatusCode.OK, message = "PASSWORD DIRUBAH!" });
+                }
+                else if (result == 2)
+                {
+                    return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "PASSWORD DAN CONFIRM PASSWORD TIDAK SAMA" });
+                }
+                else if (result == 3)
+                {
+                    return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "OTP SUDAH DIGUNAKAN" });
+                }
+                else if (result == 4)
+                {
+                    return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "OTP EXPIRED" });
+                }
+                else
+                {
+                    return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "OTP SALAH!" });
+                }
+            }
+            else
+            {
+                return StatusCode(404, new { status = HttpStatusCode.BadRequest, message = "EMAIL TIDAK DITEMUKAN!" });
+            }
+        }
+
 
     }
 }
