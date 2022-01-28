@@ -118,7 +118,7 @@ namespace API.Repository.Data
                 }
                 var accountNow = (from g in context.Accounts where g.NIK == emailNow.NIK select g).FirstOrDefault<Account>();
                 string smtpAddress = "smtp.gmail.com";
-                int portNumber = 587;
+                int portNumber = 587; //port for gmail
                 bool enableSSL = true;
                 string emailFromAddress = "medebelly@gmail.com"; //Sender Email Address  
                 string password = "webtooniwannabeyou"; //Sender Password  
@@ -179,20 +179,12 @@ namespace API.Repository.Data
                                     return 2; //Password & ConfirmPass ga sama
                                 }
                             }
-                            else
-                            {
-                                return 3; //OTP udah dipakai
-                            }
+                            return 3; //OTP udah dipakai
                         }
-                        else
-                        {
-                            return 4; //OTP expired
-                        }
+                        return 4; //OTP expired
+                        
                     }
-                    else
-                    {
-                        return 5; //OTP salah
-                    }
+                    return 5; //OTP salah
                 }
 
             }
