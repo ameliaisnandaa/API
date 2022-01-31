@@ -159,8 +159,6 @@ namespace API.Repository.Data
                               UnivName = univ.Name,
                               Role = role.Name
                           }).ToList();
-
-
             return result;
         }
         

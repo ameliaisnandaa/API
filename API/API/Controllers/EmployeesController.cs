@@ -2,6 +2,7 @@
 using API.Models;
 using API.Repository.Data;
 using API.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -54,6 +55,7 @@ namespace API.Controllers
                 return StatusCode(400, new { status = HttpStatusCode.BadRequest, message = "REGISTER GAGAL! kalo nol" });
             }
         }
+        [Authorize(Roles = "Director, Manager")]
         [Route("GetRegisteredData")]
         [HttpGet]
         public ActionResult<RegisterVM> GetRegisteredData()
