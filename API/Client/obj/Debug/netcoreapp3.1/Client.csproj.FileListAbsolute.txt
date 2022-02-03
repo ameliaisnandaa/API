@@ -37,3 +37,5 @@ C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Client.d
 C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Client.pdb
 C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
 C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Client.csproj.CopyComplete
+C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Belajar\Index.cshtml.g.cs
+C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutBelajar.cshtml.g.cs
