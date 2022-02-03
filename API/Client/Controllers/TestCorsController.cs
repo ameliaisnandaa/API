@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Controllers
 {
-    public class TestCors : Controller
+    public class TestCorsController : Controller
     {
         public IActionResult Index()
         {
