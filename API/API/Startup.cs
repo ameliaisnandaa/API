@@ -55,6 +55,11 @@ namespace API
             services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            //Cors
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
 
             services.AddAuthentication(auth =>
             {
@@ -76,6 +81,7 @@ namespace API
                     ClockSkew=TimeSpan.Zero
                 };
             });
+            
 
         }
 
@@ -86,6 +92,7 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(options => options.AllowAnyOrigin());
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -96,6 +103,9 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+
+            //Cors
+            
         }
     }
 }

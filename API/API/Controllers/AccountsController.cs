@@ -47,16 +47,11 @@ namespace API.Controllers
             {
                 var getUserData = context.Employees.Where(e => e.Email == accountVM.Email
                 || e.Phone == accountVM.Phone).FirstOrDefault(); //get email & role name
-                //var account = context.Accounts.Where(a => a.NIK == getUserData.NIK).FirstOrDefault();
-                //var role = context.AccountRoles.Where(a => a.Account_Id == account.NIK).FirstOrDefault();
                 var getRole = context.Roles.Where(a => a.AccountRole.Any(ar => ar.Account.NIK == getUserData.NIK)).ToList();
-
-                //var getRoleName = accountRepository.GetAccountData(accountVM);
 
                 var claims = new List<Claim>
                 {
-                    new Claim("Email", getUserData.Email),
-                    //new Claim("roles", role.Role.Name) //payload
+                    new Claim("Email", getUserData.Email)
                 };
 
                 foreach (var item in getRole)
