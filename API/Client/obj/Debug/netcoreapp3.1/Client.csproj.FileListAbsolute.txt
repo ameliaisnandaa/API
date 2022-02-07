@@ -39,3 +39,6 @@ C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Client.g
 C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Client.csproj.CopyComplete
 C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Belajar\Index.cshtml.g.cs
 C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutBelajar.cshtml.g.cs
+C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Belajar\IndexGridSystem.cshtml.g.cs
+C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutGridSystem.cshtml.g.cs
+C:\Users\Client\Documents\GitHub\API\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\LearnAPI\Index.cshtml.g.cs
