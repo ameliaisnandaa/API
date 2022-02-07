@@ -108,19 +108,34 @@ function detailSW(url) {
     ability = "";
     badge = "";
     stat = "";
+    move = "";
     $.ajax({
         url: url,
         success: function (result) {
             result.abilities.forEach(ab => {
                 ability += `${ab.ability.name}\n`
             })
+            result.moves.forEach(mo => {
+                move += `<li>${mo.move.name}</li><>`
+            })
+            result.stats.forEach(st => {
+
+                stat += `<tr>
+                            <td>${st.stat.name}</td>
+                            <td class="col-8">
+                                <div class="progress">
+                                  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: ${st.base_stat}%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">${st.base_stat}</div>
+                                </div>
+                            </td>  
+                        </tr>`
+            })
             result.types.forEach(t => {
                 type = `${t.type.name}`
                 if (type == "poison") {
-                   badge +=`<span class="badge badge-pill badge-dark text-light">${type}</span>`
+                    badge += `<span class="badge badge-pill badge-dark text-light">${type}</span>`
                 }
                 else if (type == "grass") {
-                   badge +=`<span class="badge badge-pill badge-success">${type}</span>`
+                    badge += `<span class="badge badge-pill badge-success">${type}</span>`
                 }
                 else if (type == "normal") {
                     badge += `<span class="badge badge-pill badge-secondary">${type}</span>`
@@ -138,44 +153,63 @@ function detailSW(url) {
                     badge += `<span class="badge badge-pill badge-muted">${type}</span>`
                 }
             })
-            result.stats.forEach(st => {
-                stat += `<tr>
-                            <td>${st.stat.name}</td>
-                            <td class="col-8">: ${st.base_stat}</td>
-                        </tr>`
-            })
             console.log(result);
             text = "";
             text = `
-                    <div class="row">
+                    <div class="row justify-content-center">
+                        <h1>${result.name.toUpperCase()}</h1>
+                    </div>
+                    <div class="row text-center">
                         <img src="${result.sprites.other.dream_world.front_default}" alt="" class="rounded-circle img-fluid mx-auto d-block shadow-lg">
                     </div>
                     <div class="row justify-content-center my-3">
                         ${badge}
                     </div>
-                    <div class="row-auto border center bg-secondary text-light text-center">DETAIL</div>
-                    <table class="table table-hover table-striped">
-                        <tr>
-                            <td>Name</td>
-                            <td class="col-8">: ${result.name}</td>
-                        </tr>
-                        <tr>
-                            <td>Ability</td>
-                            <td class="col-8">: ${ability}</td>
-                        </tr>
-                        <tr>
-                            <td>Weight</td>
-                            <td class="col-8">: ${result.weight}</td>
-                        </tr>
-                        <tr>
-                            <td>Height</td>
-                            <td class="col-8">: ${result.height}</td>
-                        </tr>
-                    </table>
-                    <div class="row-auto border center bg-secondary text-light text-center">STAT</div>
-                    <table class="table table-hover table-striped">
-                        ${stat}
-                    </table>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="detail-tab" data-toggle="tab" href="#detail" role="tab" aria-controls="home" aria-selected="true">Detail</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="stat-tab" data-toggle="tab" href="#stat" role="tab" aria-controls="profile" aria-selected="false">Stat</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="move-tab" data-toggle="tab" href="#move" role="tab" aria-controls="profile" aria-selected="false">Moves</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="home-tab">
+                            <table class="table table-hover table-striped">
+                                <tr>
+                                    <td>Name</td>
+                                    <td class="col-8">: ${result.name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ability</td>
+                                    <td class="col-8">: ${ability}</td>
+                                </tr>
+                                <tr>
+                                    <td>Weight</td>
+                                    <td class="col-8">: ${result.weight}</td>
+                                </tr>
+                                <tr>
+                                    <td>Height</td>
+                                    <td class="col-8">: ${result.height}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="stat" role="tabpanel" aria-labelledby="profile-tab">
+                            <table class="table table-hover ">
+                                ${stat}
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="move" role="tabpanel" aria-labelledby="move-tab">
+                            <table class="table table-hover ">
+                                <ol>
+                                    ${move}
+                                <ol>
+                            </table>
+                        </div>
+                    </div>
                    `
             $('.modal-body').html(text);
         }
